@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Chatbot</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #232526, #414345);
+      color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      color: #00e6e6;
+    }
+
+    .chat-container {
+      width: 100%;
+      max-width: 700px;
+      background: #2c2f33;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+
+    .chat-box {
+      height: 300px;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+      padding-right: 10px;
+    }
+
+    .message {
+      margin: 8px 0;
+    }
+
+    .user {
+      text-align: right;
+      color: #50fa7b;
+    }
+
+    .bot {
+      text-align: left;
+      color: #8be9fd;
+    }
+
+    select, input, button {
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    select {
+      background: #3a3f44;
+      color: white;
+      margin-right: 10px;
+    }
+
+    input {
+      flex: 1;
+      margin-right: 10px;
+      background: #1e1e1e;
+      color: white;
+    }
+
+    button {
+      background-color: #00e6e6;
+      color: black;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #00cccc;
+    }
+
+    .input-area {
+      display: flex;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚡ Smart Chatbot (OpenAI / Mixtral)</h1>
+  <div class="chat-container">
+    <div class="chat-box" id="chat-box"></div>
+    <div>
+      <select id="model-select">
+        <option value="openai">OpenAI GPT</option>
+        <option value="mixtral">Mixtral 8x7B</option>
+      </select>
+      <div class="input-area">
+        <input type="text" id="user-input" placeholder="Type your message..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("user-input");
+      const model = document.getElementById("model-select").value;
+      const message = input.value;
+      const chatBox = document.getElementById("chat-box");
+
+      if (!message.trim()) return;
+
+      chatBox.innerHTML += `<div class="message user">You: ${message}</div>`;
+      input.value = "";
+
+      const response = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: message, model })
+      });
+
+      const data = await response.json();
+      chatBox.innerHTML += `<div class="message bot">Bot: ${data.response}</div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
