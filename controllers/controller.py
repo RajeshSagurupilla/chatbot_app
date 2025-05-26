@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, jsonify
 from models.model import Chat
-from services.service import call_openai,call_mixtral
+from services.service import call_openai,call_mixtral,call_gemini
 
 
 chat_bp = Blueprint('chat',__name__)
@@ -18,6 +18,8 @@ def chat(chat=Chat):
         result = call_openai(input_validation.prompt)
     elif input_validation.model == "mixtral":
         result = call_mixtral(input_validation.prompt)
+    elif input_validation.model == "gemini-2.0-flash":
+        result = call_gemini(input_validation.prompt)
     else:
         result = "Invalid model selected."
 

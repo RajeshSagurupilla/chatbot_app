@@ -20,3 +20,13 @@ def call_mixtral(prompt):
     }
     response = requests.post(MIXTRAL_API_URL, headers=headers, json=data)
     return response.json()["choices"][0]["message"]["content"].strip()
+
+from openai import OpenAI 
+
+client = OpenAI( api_key="AIzaSyDNK58DnZP_CWwD-H8-uhWBs08bnp7jG8k", base_url="https://generativelanguage.googleapis.com/v1beta/openai/" ) 
+def call_gemini(prompt): 
+    response = client.chat.completions.create(
+        model="gemini-2.0-flash", 
+        messages=[ {"role": "system", "content": "You are a helpful assistant."}, 
+                  { "role": "user", "content": prompt } ] ) 
+    return response.choices[0].message 
