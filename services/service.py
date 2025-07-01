@@ -1,6 +1,7 @@
 import openai
-from configuration.config import OPENAI_API_KEY,MIXTRAL_API_KEY,MIXTRAL_API_URL
+from configuration.config import OPENAI_API_KEY,MIXTRAL_API_KEY,MIXTRAL_API_URL,GEMINI_API_KEY
 import requests
+from openai import OpenAI 
 
 def call_openai(prompt):
     response = openai.ChatCompletion.create(
@@ -21,9 +22,9 @@ def call_mixtral(prompt):
     response = requests.post(MIXTRAL_API_URL, headers=headers, json=data)
     return response.json()["choices"][0]["message"]["content"].strip()
 
-from openai import OpenAI 
 
-client = OpenAI( api_key="AIzaSyDNK58DnZP_CWwD-H8-uhWBs08bnp7jG8k", base_url="https://generativelanguage.googleapis.com/v1beta/openai/" ) 
+
+client = OpenAI( api_key=GEMINI_API_KEY, base_url="https://generativelanguage.googleapis.com/v1beta/openai/" ) 
 def call_gemini(prompt): 
     response = client.chat.completions.create(
         model="gemini-2.0-flash", 
