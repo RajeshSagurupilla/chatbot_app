@@ -6,12 +6,12 @@ from configuration.config import OPENAI_API_KEY
 
 app = Flask(__name__)
 
-
+#Key
 openai.api_key = OPENAI_API_KEY
 
 app.register_blueprint(chat_bp)
 
 
-
+#Initializing the app
 if __name__ == "__main__":
     app.run(debug=True)

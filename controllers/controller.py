@@ -2,7 +2,7 @@ from flask import Blueprint, request, render_template, jsonify
 from models.model import Chat
 from services.service import call_openai,call_mixtral,call_gemini
 
-
+#Blueprint roots
 chat_bp = Blueprint('chat',__name__)
 
 @chat_bp.route("/")
